@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="M4dOYgy6_dDMQ2u9TOsZWrYN5Gs6B_Mm2jHfZ8VDUmY" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming for Losers (PFL)</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            font-size: 16px;
+            background-color: #000;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 100%;
+            padding: 0 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        /* Header styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        header.scrolled {
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .nav-links {
+            display: none;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .nav-links.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            visibility: visible;
+        }
+        .nav-links.active a {
+            padding: 0.75rem 0;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .nav-links.active a:hover {
+            color: #f0f0f0;
+            transform: translateX(5px);
+        }
+        .menu-toggle {
+            display: block;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .menu-toggle:hover {
+            color: #f0f0f0;
+            transform: rotate(90deg);
+        }
+        /* Hero section styles */
+        .hero {
+            position: relative;
+            color: #fff;
+            text-align: center;
+            padding: 12rem 0 8rem;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hero-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            min-width: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: all 0.5s;
+        }
+        .btn:hover::before {
+            left: 100%;
+        }
+        .btn-register {
+            background-color: #fff;
+            color: #000;
+        }
+        .btn-register:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+        .btn-whatsapp {
+            background-color: #fbfcfc;
+            color: #090909;
+        }
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .btn-sdc {
+            background-color: #fbfcfc;
+            color: #000;
+        }
+        .btn-sdc:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+        /* 3D background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        /* Section styles */
+        section {
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        section h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #fff;
+            margin: 1rem auto 0;
+        }
+        
+        /* Profile Modal styles */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .profile-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .profile-container {
+            background-color: rgba(17, 17, 17, 0.95);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .profile-modal.active .profile-container {
+            transform: scale(1);
+        }
+        .close-profile {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .close-profile:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Tabs */
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .profile-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: relative;
+        }
+        .profile-tab:hover {
+            opacity: 1;
+        }
+        .profile-tab.active {
+            opacity: 1;
+        }
+        .profile-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Profile card */
+        .profile-card {
+            background-color: rgba(17, 17, 17, 0.5);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-right: 1.5rem;
+        }
+        .profile-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .profile-info p {
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+        .profile-bio {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-bottom: 0.25rem;
+        }
+        .detail-value {
+            font-size: 1.1rem;
+        }
+        .profile-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .profile-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        .profile-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Activity tab */
+        .activity-list {
+            margin-top: 1rem;
+        }
+        .activity-item {
+            padding: 1rem;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .activity-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .activity-date {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* About section styles */
+        #about {
+            background-color: rgba(17, 17, 17, 0.8);
+        }
+        #about p {
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #about.active p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Mentorship section styles */
+        #mentorship {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        /* Opportunities section styles */
+        #opportunities {
+            background-color: rgba(17, 17, 17, 0.8);
+        }
+        .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .opportunity {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .opportunity:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .opportunity h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        /* Courses section styles */
+        #courses {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .course {
+            background-color: rgba(17, 17, 17, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .course:hover {
+            transform: translateY(-5px) rotate(2deg);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .course h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Join section styles */
+        #join {
+            background-color: rgba(17, 17, 17, 0.8);
+        }
+        /* Contributors section styles */
+        #contributors {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        /* Footer styles */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        /* Responsive styles */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+            .menu-toggle {
+                display: none;
+            }
+            .nav-links {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                background-color: transparent;
+                padding: 0;
+                opacity: 1;
+                visibility: visible;
+            }
+            .nav-links a {
+                padding: 0.5rem 1rem;
+                color: #fff;
+                text-decoration: none;
+                transition: color 0.3s ease, transform 0.3s ease;
+            }
+            .nav-links a:hover {
+                color: #f0f0f0;
+                transform: translateY(-2px);
+            }
+            .hero h1 {
+                font-size: 4rem;
+            }
+            .hero p {
+                font-size: 1.6rem;
+            }
+            .profile-header {
+                flex-direction: row;
+            }
+        }
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+        @media (max-width: 480px) {
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            .profile-tabs {
+                flex-wrap: wrap;
+            }
+            .profile-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* User badge in header */
+        .user-badge {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin-left: auto;
+            margin-right: 1rem;
+        }
+        .user-badge:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+        .user-name {
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Status messages */
+        .status-message {
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .status-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        .status-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+        .status-loading {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+        
+        /* Link fields */
+        .link-field {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        .link-field input:first-child {
+            flex: 1;
+            margin-right: 0.5rem;
+        }
+        .link-field input:nth-child(2) {
+            flex: 2;
+            margin-right: 0.5rem;
+        }
+        .remove-link-btn {
+            background-color: rgba(244, 67, 54, 0.8);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .remove-link-btn:hover {
+            background-color: #F44336;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <header>
+        <nav class="container">
+            <div class="logo">PFL</div>
+            <div class="user-badge" id="user-badge">
+                <div class="user-avatar" id="user-avatar-small">?</div>
+                <div class="user-name" id="user-name-small">Loading...</div>
+            </div>
+            <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+            <div class="nav-links">
+                <a href="#" id="profile-btn">MY PROFILE</a>
+                <a href="chat.html">COMMUNITY CHAT</a>
+                <a href="chatbot.html">EXAMS AND NOTES</a>
+                <a href="event notification.html">EVENT CALENDAR</a>
+                <a href="#about">ABOUT</a>
+                <a href="courses.html">COURSES</a>
+                <a href="#join">JOIN US</a>
+                <a href="https://studentdeveloperclub.tech/?i=2">EXPLORE SDC</a>
+                <a href="#contributors">CONTRIBUTORS</a>
+                <a href="#" id="logout-btn">LOGOUT</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Profile Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-container">
+            <button class="close-profile" id="close-profile">×</button>
+            
+            <div class="profile-tabs">
+                <button class="profile-tab active" data-tab="profile-info">Profile</button>
+                <button class="profile-tab" data-tab="profile-edit">Edit Profile</button>
+                <button class="profile-tab" data-tab="profile-activity">Activity</button>
+            </div>
+            
+            <!-- Profile Info Tab -->
+            <div class="tab-content active" id="profile-info">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar"></div>
+                        <div class="profile-info">
+                            <h3 id="profile-name">Loading...</h3>
+                            <p id="profile-college">Loading...</p>
+                            <p id="profile-semester">Loading...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-bio" id="profile-bio">
+                        Loading...
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value" id="profile-email">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Instagram</span>
+                            <span class="detail-value" id="profile-instagram">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-links" id="profile-links">
+                        <!-- Links will be added here dynamically -->
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="btn btn-register" id="edit-profile-btn">Edit Profile</button>
+                        <a href="chat.html" class="btn btn-whatsapp">Join Chat</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Edit Profile Tab -->
+            <div class="tab-content" id="profile-edit">
+                <div id="edit-status-message" class="status-message hidden"></div>
+                
+                <form id="edit-profile-form">
+                    <div class="form-group">
+                        <label for="edit-name">Name</label>
+                        <input type="text" id="edit-name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-bio">Bio</label>
+                        <textarea id="edit-bio" class="form-control" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-instagram">Instagram Link</label>
+                        <input type="url" id="edit-instagram" class="form-control" placeholder="https://instagram.com/yourusername">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-semester">Semester</label>
+                        <select id="edit-semester" class="form-control">
+                            <option value="">Select Semester</option>
+                            <option value="1">1st Semester</option>
+                            <option value="2">2nd Semester</option>
+                            <option value="3">3rd Semester</option>
+                            <option value="4">4th Semester</option>
+                            <option value="5">5th Semester</option>
+                            <option value="6">6th Semester</option>
+                            <option value="7">7th Semester</option>
+                            <option value="8">8th Semester</option>
+                            <option value="Graduate">Graduate</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-college">College Name</label>
+                        <input type="text" id="edit-college" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Custom Links</label>
+                        <div id="edit-links-container">
+                            <!-- Link fields will be added here -->
+                        </div>
+                        <button type="button" id="add-link" class="btn btn-register" style="margin-top: 0.5rem; width: auto;">+ Add Link</button>
+                    </div>
+                    
+                    <button type="submit" id="save-profile-btn" class="btn btn-register">
+                        <span id="save-spinner" class="spinner hidden"></span>
+                        <span id="save-text">Save Changes</span>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Activity Tab -->
+            <div class="tab-content" id="profile-activity">
+                <h3>Recent Activity</h3>
+                <p>Your recent activity will appear here.</p>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-date">No recent activity</div>
+                        <p>Your profile updates, chat messages, and other interactions will be shown here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div id="particles-js"></div>
+            <div class="container hero-content">
+                <h1>Programming for Losers (PFL)</h1>
+                <p>
+                    Where coding failures become programming triumphs. Join our student-led club of aspiring programmers and future tech leaders!
+                </p>
+                <div class="button-group">
+                    <a href="https://forms.gle/JFmPGDkyMmR75B4Q6" class="btn btn-register">Register Now</a>
+                    <a href="https://chat.whatsapp.com/L6oZFQQv3sk7pzhheDDZDh" class="btn btn-whatsapp">Join WhatsApp</a>
+                    <a href="https://studentdeveloperclub.tech/?i=3" class="btn btn-sdc">SDC</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>About PFL</h2>
+                <p>Programming for Losers (PFL) is a grassroots initiative started by a group of passionate first-year students. We're just a bunch of coding enthusiasts trying to create a supportive community outside of our formal college environment. Our goal? To connect with like-minded individuals who share our love for programming and technology.</p>
+                <p>As an independent club, we're not affiliated with any college or institution. We're simply students helping students, learning together, and building a network that extends beyond our campus. Whether you're a coding newbie or a budding tech wizard, 
+                PFL is the place where we all start as 'losers' but grow together into winners.</p>
+                <div id="react-3d-viewer" class="mt-8"></div>
+            </div>
+        </section>
+
+        <section id="mentorship">
+            <div class="container">
+                <h2>Peer Learning, Not Teaching</h2>
+                <p>At PFL, we believe in the power of peer learning. We're all students here, learning and growing together. We share our experiences, help each other overcome coding challenges, and collaborate on projects. It's not about one person teaching another; it's about collective growth and mutual support.</p>
+            </div>
+        </section>
+
+        <section id="opportunities">
+            <div class="container">
+                <h2>Opportunities</h2>
+                <div class="opportunities-grid">
+                    <div class="opportunity">
+                        <h3>Project Collaborations</h3>
+                        <p>Team up with fellow members on coding projects. Gain hands-on experience and build your portfolio while learning from peers.</p>
+                    </div>
+                    <div class="opportunity">
+                        <h3>Skill Sharing Sessions</h3>
+                        <p>Participate in regular skill-sharing meetups where members can present and learn about various programming topics and technologies.</p>
+                    </div>
+                    <div class="opportunity">
+                        <h3>Hackathons</h3>
+                        <p>Join our internal hackathons to challenge yourself, work on innovative projects, and compete in a friendly environment.</p>
+                    </div>
+                    <div class="opportunity">
+                        <h3>Networking Events</h3>
+                        <p>Connect with industry professionals and alumni through our networking events and gain insights into the tech industry.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses">
+            <div class="container">
+                <h2>Our Learning Tracks</h2>
+                <p>While we're not a formal educational institution, we organize study groups and learning tracks based on member interests:</p>
+                <div class="courses-grid">
+                    <div class="course">
+                        <h3>Web Development Basics</h3>
+                        <p>HTML, CSS, JavaScript fundamentals</p>
+                    </div>
+                    <div class="course">
+                        <h3>Python for Beginners</h3>
+                        <p>Learn Python programming from scratch</p>
+                    </div>
+                    <div class="course">
+                        <h3>Data Structures & Algorithms</h3>
+                        <p>Essential CS concepts for interviews</p>
+                    </div>
+                    <div class="course">
+                        <h3>Mobile App Development</h3>
+                        <p>Build apps for iOS and Android</p>
+                    </div>
+                    <div class="course">
+                        <h3>Machine Learning Basics</h3>
+                        <p>Introduction to AI and ML concepts</p>
+                    </div>
+                    <div class="course">
+                        <h3>Version Control with Git</h3>
+                        <p>Master Git and GitHub for collaboration</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="join">
+            <div class="container">
+                <h2>Join PFL Today</h2>
+                <p>Ready to start your programming journey with a supportive community of fellow students? Fill out our form to join our mailing list and be the first to know about upcoming meetups, projects, and learning opportunities.</p>
+                <div class="button-group">
+                    <a href="https://forms.gle/JFmPGDkyMmR75B4Q6" class="btn btn-register">Register Now</a>
+                    <a href="https://chat.whatsapp.com/L6oZFQQv3sk7pzhheDDZDh" class="btn btn-whatsapp">Join WhatsApp</a>
+                    <a href="https://studentdeveloperclub.tech/?i=3" class="btn btn-sdc">SDC</a>
+                </div>
+            </div>
+        </section>
+        <section id="contributors">
+            <div class="container">
+                <h2>Contributors</h2>
+                <div class="opportunities-grid">
+                    <div class="opportunity">
+                        <h3>Shakti Singh</h3>
+                        <p>Email: <a href="mailto:shaktisingh4140@gmail.com" class="btn btn-register">Email</a></p>
+                        <p>GitHub: <a href="https://github.com/shaktisingh5580" target="_blank" rel="noopener noreferrer" class="btn btn-register">Github</a></p>
+                    </div>
+                    <div class="opportunity">
+                        <h3>Mehul</h3>
+                        <p>Email: <a href="mailto:mehulpatharkar21@gmail.com" class="btn btn-register">Email</a></p>
+                        <p>GitHub: <a href="https://github.com/Mehul0Github" target="_blank" rel="noopener noreferrer" class="btn btn-register">Github</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Programming for Losers (PFL). All rights reserved. Not affiliated with any educational institution.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCc1y2kNbSftG45mB3gkbUCGs4gfjts-E",
+            authDomain: "realtimepfl.firebaseapp.com",
+            databaseURL: "https://realtimepfl-default-rtdb.firebaseio.com",
+            projectId: "realtimepfl",
+            storageBucket: "realtimepfl.firebasestorage.app",
+            messagingSenderId: "984202175754",
+            appId: "1:984202175754:web:a0d689738832cc48b686f3",
+            measurementId: "G-4W311B25HV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const profileModal = document.getElementById('profile-modal');
+        const profileBtn = document.getElementById('profile-btn');
+        const closeProfileBtn = document.getElementById('close-profile');
+        const userBadge = document.getElementById('user-badge');
+        const logoutBtn = document.getElementById('logout-btn');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const profileTabs = document.querySelectorAll('.profile-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const editProfileForm = document.getElementById('edit-profile-form');
+        const addLinkBtn = document.getElementById('add-link');
+        const editLinksContainer = document.getElementById('edit-links-container');
+        const editStatusMessage = document.getElementById('edit-status-message');
+        const saveProfileBtn = document.getElementById('save-profile-btn');
+        const saveSpinner = document.getElementById('save-spinner');
+        const saveText = document.getElementById('save-text');
+
+        // Current user data
+        let currentUser = null;
+        let userData = null;
+
+        // Check authentication state
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                currentUser = user;
+                
+                // Get user data from Firestore
+                getDoc(doc(db, 'users', user.uid))
+                    .then(docSnap => {
+                        if (docSnap.exists()) {
+                            userData = docSnap.data();
+                            
+                            // Update profile elements
+                            updateProfileUI(userData);
+                            
+                            // Update edit form
+                            populateEditForm(userData);
+                        } else {
+                            console.log("No user data found!");
+                            // Redirect to profile setup if no data
+                            window.location.href = 'profile.html';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error getting user data:", error);
+                        showStatusMessage('error', "Error loading profile: " + error.message);
+                    });
+            } else {
+                // Redirect to login if not logged in
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Update profile UI with user data
+        function updateProfileUI(data) {
+            // Main profile tab
+            document.getElementById('profile-name').textContent = data.name || 'No Name Set';
+            document.getElementById('profile-email').textContent = data.email || currentUser.email;
+            document.getElementById('profile-bio').textContent = data.bio || 'No bio available';
+            document.getElementById('profile-college').textContent = data.college || 'No college set';
+            document.getElementById('profile-semester').textContent = data.semester ? `Semester ${data.semester}` : 'No semester set';
+            
+            // Instagram link
+            if (data.instagram) {
+                document.getElementById('profile-instagram').innerHTML = `<a href="${data.instagram}" target="_blank">${data.instagram}</a>`;
+            } else {
+                document.getElementById('profile-instagram').textContent = 'Not set';
+            }
+            
+            // Profile avatar (first letter of name)
+            const avatarText = (data.name && data.name.charAt(0)) || currentUser.email.charAt(0).toUpperCase();
+            document.getElementById('profile-avatar').textContent = avatarText;
+            document.getElementById('user-avatar-small').textContent = avatarText;
+            document.getElementById('user-name-small').textContent = data.name || 'User';
+            
+            // Custom links
+            const linksContainer = document.getElementById('profile-links');
+            linksContainer.innerHTML = '';
+            
+            if (data.links && data.links.length > 0) {
+                data.links.forEach(link => {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.target = '_blank';
+                    linkElement.className = 'profile-link';
+                    linkElement.textContent = link.title;
+                    linksContainer.appendChild(linkElement);
+                });
+            } else {
+                linksContainer.innerHTML = '<p>No custom links added</p>';
+            }
+        }
+
+        // Populate edit form with user data
+        function populateEditForm(data) {
+            document.getElementById('edit-name').value = data.name || '';
+            document.getElementById('edit-bio').value = data.bio || '';
+            document.getElementById('edit-instagram').value = data.instagram || '';
+            document.getElementById('edit-semester').value = data.semester || '';
+            document.getElementById('edit-college').value = data.college || '';
+            
+            // Clear and populate links
+            editLinksContainer.innerHTML = '';
+            
+            if (data.links && data.links.length > 0) {
+                data.links.forEach(link => {
+                    addLinkField(link.title, link.url);
+                });
+            } else {
+                addLinkField('', '');
+            }
+        }
+
+        // Add link field to edit form
+        function addLinkField(title = '', url = '') {
+            const linkField = document.createElement('div');
+            linkField.className = 'link-field';
+            linkField.innerHTML = `
+                <input type="text" placeholder="Title" value="${title}" class="form-control">
+                <input type="url" placeholder="URL" value="${url}" class="form-control">
+                <button type="button" class="remove-link-btn">×</button>
+            `;
+            
+            const removeBtn = linkField.querySelector('.remove-link-btn');
+            removeBtn.addEventListener('click', () => {
+                linkField.remove();
+            });
+            
+            editLinksContainer.appendChild(linkField);
+        }
+
+        // Show status message
+        function showStatusMessage(type, message) {
+            editStatusMessage.textContent = message;
+            editStatusMessage.className = `status-message status-${type}`;
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                editStatusMessage.className = 'status-message hidden';
+            }, 5000);
+        }
+
+        // Save profile changes
+        editProfileForm.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            // Show loading state
+            saveSpinner.classList.remove('hidden');
+            saveText.textContent = 'Saving...';
+            saveProfileBtn.disabled = true;
+            
+            const name = document.getElementById('edit-name').value;
+            const bio = document.getElementById('edit-bio').value;
+            const instagram = document.getElementById('edit-instagram').value;
+            const semester = document.getElementById('edit-semester').value;
+            const college = document.getElementById('edit-college').value;
+            
+            // Get all links
+            const linkFields = editLinksContainer.querySelectorAll('.link-field');
+            const links = [];
+            
+            linkFields.forEach(field => {
+                const titleInput = field.querySelector('input:first-child');
+                const urlInput = field.querySelector('input:nth-child(2)');
+                
+                if (titleInput.value && urlInput.value) {
+                    links.push({
+                        title: titleInput.value,
+                        url: urlInput.value
+                    });
+                }
+            });
+            
+            // Update Firestore
+            updateDoc(doc(db, 'users', currentUser.uid), {
+                name: name,
+                bio: bio,
+                instagram: instagram,
+                semester: semester,
+                college: college,
+                links: links,
+                updatedAt: serverTimestamp()
+            })
+            .then(() => {
+                console.log("Profile updated successfully");
+                
+                // Update user data and UI
+                userData = {
+                    ...userData,
+                    name, bio, instagram, semester, college, links
+                };
+                
+                updateProfileUI(userData);
+                
+                // Show success message
+                showStatusMessage('success', 'Profile updated successfully!');
+                
+                // Reset loading state
+                saveSpinner.classList.add('hidden');
+                saveText.textContent = 'Save Changes';
+                saveProfileBtn.disabled = false;
+                
+                // Log activity
+                addDoc(collection(db, 'users', currentUser.uid, 'activities'), {
+                    type: 'profile_update',
+                    timestamp: serverTimestamp(),
+                    details: 'Updated profile information'
+                }).catch(error => {
+                    console.error("Error logging activity:", error);
+                });
+            })
+            .catch(error => {
+                console.error("Error updating profile:", error);
+                showStatusMessage('error', "Error updating profile: " + error.message);
+                
+                // Reset loading state
+                saveSpinner.classList.add('hidden');
+                saveText.textContent = 'Save Changes';
+                saveProfileBtn.disabled = false;
+            });
+        });
+
+        // Switch tabs
+        function switchTab(tabId) {
+            // Hide all tabs
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            profileTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to selected tab button
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // Tab switching
+        profileTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                switchTab(tabId);
+            });
+        });
+
+        // Add link button
+        addLinkBtn.addEventListener('click', () => {
+            addLinkField();
+        });
+
+        // Edit profile button
+        editProfileBtn.addEventListener('click', () => {
+            switchTab('profile-edit');
+        });
+
+        // Open profile modal
+        function openProfileModal() {
+            profileModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close profile modal
+        function closeProfileModal() {
+            profileModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Profile button click
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openProfileModal();
+        });
+
+        // User badge click
+        userBadge.addEventListener('click', () => {
+            openProfileModal();
+        });
+
+        // Close profile button click
+        closeProfileBtn.addEventListener('click', () => {
+            closeProfileModal();
+        });
+
+        // Close modal when clicking outside
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                closeProfileModal();
+            }
+        });
+
+        // Logout button
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        });
+
+        // Check for hash in URL to open profile modal
+        if (window.location.hash === '#profile-modal') {
+            setTimeout(() => {
+                openProfileModal();
+                window.location.hash = '';
+            }, 500);
+        }
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('nav')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Three.js background animation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        camera.position.z = 30;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            torusKnot.rotation.x += 0.01;
+            torusKnot.rotation.y += 0.005;
+            torusKnot.rotation.z += 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } },
+                size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
+            retina_detect: true
+        });
+
+        // GSAP animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Header animation
+        gsap.to('header', {
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top -80px',
+                end: '+=80',
+                scrub: true
+            },
+            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            height: '60px',
+            ease: 'none'
+        });
+
+        // Hero section animations
+        gsap.from('.hero h1, .hero p, .hero .btn', {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+
+        // Scroll animations for sections
+        gsap.utils.toArray('section').forEach((section, i) => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            tl.from(section.querySelectorAll('h2'), {
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: 'power3.out'
+            })
+            .from(section.querySelectorAll('p'), {
+                opacity: 0,
+                y: 30,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out'
+            }, '-=0.4')
+            .from(section.querySelectorAll('.opportunity, .course'), {
+                opacity: 0,
+                y: 30,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            }, '-=0.6');
+        });
+
+        // Parallax effect for sections
+        gsap.utils.toArray('section').forEach((section) => {
+            gsap.to(section, {
+                backgroundPosition: `50% ${innerHeight / 2}px`,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+        });
+
+        // Button hover animation
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                gsap.to(btn, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#') return;
+                
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="improved-3d-viewer.js"></script>
+    <script>
+        ReactDOM.render(React.createElement(Component), document.getElementById('react-3d-viewer'));
+    </script>
+</body>
+</html>
